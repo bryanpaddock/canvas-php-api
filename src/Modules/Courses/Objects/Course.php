@@ -2,6 +2,8 @@
 
 namespace Valenture\CanvasApi\Modules\Courses\Objects;
 
+use DateTime;
+
 /**
  * Class Course
  *
@@ -68,6 +70,21 @@ final class Course
     private $enrollmentTermId;
 
     /**
+     * @var DateTime
+     */
+    private $createdAt;
+
+    /**
+     * @var DateTime
+     */
+    private $startAt;
+
+    /**
+     * @var DateTime
+     */
+    private $endAt;
+
+    /**
      * @return string
      */
     public function getId(): string
@@ -84,6 +101,22 @@ final class Course
     }
 
     /**
+     * @return string|null
+     */
+    public function getSisCourseId(): ?string
+    {
+        return $this->sisCourseId;
+    }
+
+    /**
+     * @param string|null $sisCourseId
+     */
+    public function setSisCourseId(?string $sisCourseId): void
+    {
+        $this->sisCourseId = $sisCourseId;
+    }
+
+    /**
      * @return string
      */
     public function getUuid(): string
@@ -97,6 +130,38 @@ final class Course
     public function setUuid(string $uuid): void
     {
         $this->uuid = $uuid;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getIntegrationId(): ?string
+    {
+        return $this->integrationId;
+    }
+
+    /**
+     * @param string|null $integrationId
+     */
+    public function setIntegrationId(?string $integrationId): void
+    {
+        $this->integrationId = $integrationId;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSisImportId(): ?string
+    {
+        return $this->sisImportId;
+    }
+
+    /**
+     * @param string|null $sisImportId
+     */
+    public function setSisImportId(?string $sisImportId): void
+    {
+        $this->sisImportId = $sisImportId;
     }
 
     /**
@@ -131,6 +196,127 @@ final class Course
         $this->courseCode = $courseCode;
     }
 
+    /**
+     * @return string
+     */
+    public function getWorkflowState(): string
+    {
+        return $this->workflowState;
+    }
 
+    /**
+     * @param string $workflowState
+     */
+    public function setWorkflowState(string $workflowState): void
+    {
+        $this->workflowState = $workflowState;
+    }
 
+    /**
+     * @return string
+     */
+    public function getAccountId(): string
+    {
+        return $this->accountId;
+    }
+
+    /**
+     * @param string $accountId
+     */
+    public function setAccountId(string $accountId): void
+    {
+        $this->accountId = $accountId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRootAccountId(): string
+    {
+        return $this->rootAccountId;
+    }
+
+    /**
+     * @param string $rootAccountId
+     */
+    public function setRootAccountId(string $rootAccountId): void
+    {
+        $this->rootAccountId = $rootAccountId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEnrollmentTermId(): string
+    {
+        return $this->enrollmentTermId;
+    }
+
+    /**
+     * @param string $enrollmentTermId
+     */
+    public function setEnrollmentTermId(string $enrollmentTermId): void
+    {
+        $this->enrollmentTermId = $enrollmentTermId;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreatedAt(): DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param DateTime $createdAt
+     */
+    public function setCreatedAt(DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getStartAt(): DateTime
+    {
+        return $this->startAt;
+    }
+
+    /**
+     * @param DateTime $startAt
+     */
+    public function setStartAt(DateTime $startAt): void
+    {
+        $this->startAt = $startAt;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getEndAt(): DateTime
+    {
+        return $this->endAt;
+    }
+
+    /**
+     * @param DateTime $endAt
+     */
+    public function setEndAt(DateTime $endAt): void
+    {
+        $this->endAt = $endAt;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'course_code' => $this->courseCode,
+            'start_at' => $this->startAt->format('c'),
+            'end_at' => $this->endAt->format('c'),
+            'license' => 'private',
+            'is_public' => false,
+        ];
+    }
 }

@@ -39,7 +39,7 @@ final class CanvasApi implements CanvasApiInterface
      *
      * @var int
      */
-    private $accountId;
+    private $accountId = 1;
 
     /**
      * CanvasApi constructor.

@@ -86,7 +86,7 @@ final class CourseModule extends AbstractModule implements ModuleInterface
             return CourseFactory::make($body);
         } catch (RequestException $e) {
             $msg = $e->getMessage();
-            $errorMessage = 'Courses/ListCourses Error: ' . $msg;
+            $errorMessage = 'Courses/CreateCourse Error: ' . $msg;
 
             throw new Exception($errorMessage);
         }
@@ -118,6 +118,36 @@ final class CourseModule extends AbstractModule implements ModuleInterface
         } catch (RequestException $e) {
             $msg = $e->getMessage();
             $errorMessage = 'Courses/ListCourses Error: ' . $msg;
+
+            throw new Exception($errorMessage);
+        }
+    }
+
+    /**
+     * Delete a course
+     *
+     * @param string $courseId
+     * @return Course
+     * @throws Exception
+     */
+    public function deleteCourse(string $courseId)
+    {
+        $headers = ['Authorization' => 'Bearer ' . $this->getApi()->getConfig()->getToken()];
+
+        $url = $this->getApi()->getApiPrefix() . '/courses/' . $courseId;
+
+        try {
+            /** @var Response $guzzleResponse */
+            $guzzleResponse = $this->getApi()->getClient()->delete($url, [
+                'headers' => $headers
+            ]);
+
+            $body = $guzzleResponse->getBody()->getContents();
+
+            return CourseFactory::make($body);
+        } catch (RequestException $e) {
+            $msg = $e->getMessage();
+            $errorMessage = 'Courses/CreateCourse Error: ' . $msg;
 
             throw new Exception($errorMessage);
         }
