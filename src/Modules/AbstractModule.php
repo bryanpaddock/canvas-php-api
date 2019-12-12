@@ -19,13 +19,31 @@ abstract class AbstractModule
     private $api;
 
     /**
+     * @var string The account ID to perform user actions on
+     */
+    private $accountId = 1;
+
+    /**
      * UserModule constructor.
      *
      * @param CanvasApi $api
+     * @param int $accountId
      */
-    public function __construct(CanvasApi $api)
+    public function __construct(CanvasApi $api, ?int $accountId)
     {
         $this->api = $api;
+
+        if ($accountId) {
+            $this->accountId = $accountId;
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccountId(): string
+    {
+        return $this->accountId;
     }
 
     /**

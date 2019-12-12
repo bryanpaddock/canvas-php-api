@@ -35,6 +35,13 @@ final class CanvasApi implements CanvasApiInterface
     private $apiPrefix = 'https://valentureonlinecampus.instructure.com/api/v1';
 
     /**
+     * Account we are scoped to (default is just 1)
+     *
+     * @var int
+     */
+    private $accountId;
+
+    /**
      * CanvasApi constructor.
      *
      * @param CanvasConfig $config
@@ -99,17 +106,16 @@ final class CanvasApi implements CanvasApiInterface
      */
     public function getCoursesModule(int $userId): CourseModule
     {
-        return new CourseModule($this, $userId);
+        return new CourseModule($this, $this->accountId, $userId);
     }
 
     /**
      * Returns the UsersModule
      *
-     * @param $accountId
      * @return UserModule
      */
-    public function getUsersModule($accountId): UserModule
+    public function getUsersModule(): UserModule
     {
-        return new UserModule($this, $accountId);
+        return new UserModule($this, $this->accountId);
     }
 }

@@ -5,7 +5,13 @@ namespace Valenture\CanvasApi\Config;
 /**
  * Class CanvasConfig
  *
- * Configuration class required for authentication with Canvas LMS
+ * Configuration class required for authentication with Canvas LMS.
+ *
+ * We currently only support token based authentication as we are only
+ * performing admin functions with the API.
+ *
+ * If we were performing actions on behalf of students we would incorporate
+ * Oauth2
  *
  * @package Valenture\CanvasApi\Config
  */

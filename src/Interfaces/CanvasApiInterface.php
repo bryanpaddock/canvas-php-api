@@ -25,5 +25,5 @@ interface CanvasApiInterface
     public function setApiPrefix(string $apiPrefix): void;
 
     public function getCoursesModule(int $userId): CourseModule;
-    public function getUsersModule($accountId): UserModule;
+    public function getUsersModule(): UserModule;
 }

@@ -23,18 +23,20 @@ final class CourseModule extends AbstractModule implements ModuleInterface
      * @var string The API prefix without leading slash. Set by setUserId()
      */
     private $listCoursesSuffix;
+    private $createCoursesSuffix;
 
     /**
      * CourseModule constructor.
      *
      * @param CanvasApi $canvasApi
-     * @param string    $userId
+     * @param int $accountId
+     * @param string $userId
      */
-    public function __construct(CanvasApi $canvasApi, string $userId)
+    public function __construct(CanvasApi $canvasApi, int $accountId, string $userId)
     {
         $this->setUserId($userId);
 
-        parent::__construct($canvasApi);
+        parent::__construct($canvasApi, $accountId);
     }
 
     /**
@@ -55,6 +57,39 @@ final class CourseModule extends AbstractModule implements ModuleInterface
         // configure all endpoints correctly
         $listCoursesSuffixTemplate = '/users/:user_id/courses';
         $this->listCoursesSuffix = str_replace(':user_id', $this->userId, $listCoursesSuffixTemplate);
+
+        $createCoursesSuffix = '/accounts/:account_id/courses';
+        $this->createCoursesSuffix = str_replace(':user_id', $this->getAccountId(), $createCoursesSuffix);
+    }
+
+    /**
+     * Creates a course on Canvas
+     *
+     * @param Course $course
+     * @return Course
+     * @throws Exception
+     */
+    public function createCourse(Course $course): Course
+    {
+        $headers = ['Authorization' => 'Bearer ' . $this->getApi()->getConfig()->getToken()];
+
+        $url = $this->getApi()->getApiPrefix() . $this->createCoursesSuffix;
+
+        try {
+            /** @var Response $guzzleResponse */
+            $guzzleResponse = $this->getApi()->getClient()->get($url, [
+                'headers' => $headers
+            ]);
+
+            $body = $guzzleResponse->getBody()->getContents();
+
+            return CourseFactory::make($body);
+        } catch (RequestException $e) {
+            $msg = $e->getMessage();
+            $errorMessage = 'Courses/ListCourses Error: ' . $msg;
+
+            throw new Exception($errorMessage);
+        }
     }
 
     /**

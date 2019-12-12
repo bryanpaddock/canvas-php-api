@@ -5,6 +5,7 @@ namespace Valenture\CanvasApi\Modules\Users;
 use Exception;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
+use RuntimeException;
 use Valenture\CanvasApi\CanvasApi;
 use Valenture\CanvasApi\Interfaces\ModuleInterface;
 use Valenture\CanvasApi\Modules\AbstractModule;
@@ -23,12 +24,10 @@ use function GuzzleHttp\Psr7\parse_header;
  */
 final class UserModule extends AbstractModule implements ModuleInterface
 {
-    use PaginationTrait;
-
     /**
-     * @var string The account ID to perform user actions on
+     * Adds pagination functionality
      */
-    private $accountId;
+    use PaginationTrait;
 
     /**
      * @var string The API prefix without leading slash
@@ -39,34 +38,23 @@ final class UserModule extends AbstractModule implements ModuleInterface
      * UserModule constructor.
      *
      * @param CanvasApi $api
-     * @param string    $accountId
+     * @param int       $accountId
      */
-    public function __construct(CanvasApi $api, string $accountId)
+    public function __construct(CanvasApi $api, int $accountId = 1)
     {
-        parent::__construct($api);
-
-        $this->setAccountId($accountId);
-    }
-
-    /**
-     * Returns the current AccountId we are scoped to
-     *
-     * @return string
-     */
-    public function getAccountId(): string
-    {
-        return $this->accountId;
+        parent::__construct($api, $accountId);
     }
 
     /**
      * Sets the AccountId and updates the ApiSuffix to include the new account id
      *
-     * @param string $accountId
+     * @param int $accountId
      */
-    public function setAccountId(string $accountId): void
+    public function setAccountId(int $accountId): void
     {
-        $this->accountId = $accountId;
-        $this->apiSuffix = sprintf($this->apiSuffix, $this->accountId);
+        $this->setAccountId($accountId);
+
+        $this->apiSuffix = sprintf($this->apiSuffix, $accountId);
     }
 
     /**
@@ -90,14 +78,14 @@ final class UserModule extends AbstractModule implements ModuleInterface
             ]);
 
             $body = $guzzleResponse->getBody()->getContents();
-            $json = json_decode($body);
+            $json = json_decode($body, false, 512, JSON_THROW_ON_ERROR);
 
             return UserFactory::make($json);
         } catch (RequestException $e) {
             $msg = $e->getMessage();
             $errorMessage = 'Users/CreateUser Error: ' . $msg;
 
-            throw new Exception($errorMessage);
+            throw new RuntimeException($errorMessage);
         }
     }
 
@@ -130,7 +118,7 @@ final class UserModule extends AbstractModule implements ModuleInterface
             $msg = $e->getMessage();
             $errorMessage = 'Users/ListUsers Error: ' . $msg;
 
-            throw new Exception($errorMessage);
+            throw new RuntimeException($errorMessage);
         }
     }
 
@@ -156,7 +144,7 @@ final class UserModule extends AbstractModule implements ModuleInterface
             $body = $guzzleResponse->getBody()->getContents();
 
             // $parsed = parse_header($guzzleResponse->getHeader('Link'));
-            $json = json_decode($body);
+            $json = json_decode($body, false, 512, JSON_THROW_ON_ERROR);
 
             print_r($json);
 
@@ -165,7 +153,7 @@ final class UserModule extends AbstractModule implements ModuleInterface
             $msg = $e->getMessage();
             $errorMessage = 'Users/ListUsers Error: ' . $msg;
 
-            throw new Exception($errorMessage);
+            throw new RuntimeException($errorMessage);
         }
     }
 }
