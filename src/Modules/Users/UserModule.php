@@ -43,6 +43,8 @@ final class UserModule extends AbstractModule implements ModuleInterface
     public function __construct(CanvasApi $api, int $accountId = 1)
     {
         parent::__construct($api, $accountId);
+
+        $this->setAccountId($accountId);
     }
 
     /**
@@ -52,8 +54,6 @@ final class UserModule extends AbstractModule implements ModuleInterface
      */
     public function setAccountId(int $accountId): void
     {
-        $this->setAccountId($accountId);
-
         $this->apiSuffix = sprintf($this->apiSuffix, $accountId);
     }
 
