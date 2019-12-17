@@ -4,6 +4,7 @@ namespace Valenture\CanvasApi\Modules\SisImport;
 
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
+use RuntimeException;
 use Valenture\CanvasApi\CanvasApi;
 use Valenture\CanvasApi\Interfaces\ModuleInterface;
 use Valenture\CanvasApi\Modules\AbstractModule;

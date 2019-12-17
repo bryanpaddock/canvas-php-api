@@ -5,6 +5,7 @@ namespace Valenture\CanvasApi;
 use GuzzleHttp\ClientInterface;
 use Valenture\CanvasApi\Config\CanvasConfig;
 use Valenture\CanvasApi\Interfaces\CanvasApiInterface;
+use Valenture\CanvasApi\Modules\Conversations\ConversationModule;
 use Valenture\CanvasApi\Modules\Courses\CourseModule;
 use Valenture\CanvasApi\Modules\Users\UserModule;
 
@@ -117,5 +118,15 @@ final class CanvasApi implements CanvasApiInterface
     public function getUsersModule(): UserModule
     {
         return new UserModule($this, $this->accountId);
+    }
+
+    /**
+     * Returns the Conversation Module
+     *
+     * @return ConversationModule
+     */
+    public function getConversationModule(): ConversationModule
+    {
+        return new ConversationModule($this, $this->accountId);
     }
 }
