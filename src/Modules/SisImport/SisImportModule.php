@@ -44,14 +44,12 @@ final class SisImportModule extends AbstractModule implements ModuleInterface
             'filename' => 'enrollments.csv'
         ];
 
-        $headers = ['Authorization' => 'Bearer ' . $this->getApi()->getConfig()->getToken()];
-
         $url = $this->getApi()->getApiPrefix() . $this->apiSuffix;
 
         try {
             /** @var Response $guzzleResponse */
             $guzzleResponse = $this->getApi()->getClient()->post($url, [
-                'headers' => $headers,
+                'headers' => $this->getAuthHeader(),
                 'multipart' => $multipart
             ]);
 

@@ -53,4 +53,12 @@ abstract class AbstractModule
     {
         return $this->api;
     }
+
+    /**
+     * @return array
+     */
+    public function getAuthHeader(): array
+    {
+        return ['Authorization' => 'Bearer ' . $this->getApi()->getConfig()->getToken()];
+    }
 }

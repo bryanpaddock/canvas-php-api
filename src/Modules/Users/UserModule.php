@@ -66,15 +66,13 @@ final class UserModule extends AbstractModule implements ModuleInterface
      */
     public function createUser(CreateUserRequest $createUserRequest): User
     {
-        $headers = ['Authorization' => 'Bearer ' . $this->getApi()->getConfig()->getToken()];
-
         $url = $this->getApi()->getApiPrefix() . $this->apiSuffix;
         $url .= '?' . http_build_query($createUserRequest->toArray());
 
         try {
             /** @var Response $guzzleResponse */
             $guzzleResponse = $this->getApi()->getClient()->post($url, [
-                'headers' => $headers,
+                'headers' => $this->getAuthHeader(),
             ]);
 
             $body = $guzzleResponse->getBody()->getContents();
@@ -98,15 +96,13 @@ final class UserModule extends AbstractModule implements ModuleInterface
      */
     public function listUsers(?Parameters\ListUserParameters $listUserParameters): array
     {
-        $headers = ['Authorization' => 'Bearer ' . $this->getApi()->getConfig()->getToken()];
-
         $url = $this->getApi()->getApiPrefix() . $this->apiSuffix;
         $url .= '?' . http_build_query($listUserParameters->toArray() + ['page' => $this->getPage(), 'per_page' => $this->getPerPage()]);
 
         try {
             /** @var Response $guzzleResponse */
             $guzzleResponse = $this->getApi()->getClient()->get($url, [
-                'headers' => $headers
+                'headers' => $this->getAuthHeader(),
             ]);
 
             $body = $guzzleResponse->getBody()->getContents();
@@ -131,14 +127,12 @@ final class UserModule extends AbstractModule implements ModuleInterface
      */
     public function viewUserDetails(int $userId): User
     {
-        $headers = ['Authorization' => 'Bearer ' . $this->getApi()->getConfig()->getToken()];
-
         $url = $this->getApi()->getApiPrefix() . $this->apiSuffix;
 
         try {
             /** @var Response $guzzleResponse */
             $guzzleResponse = $this->getApi()->getClient()->get($url, [
-                'headers' => $headers
+                'headers' => $this->getAuthHeader(),
             ]);
 
             $body = $guzzleResponse->getBody()->getContents();

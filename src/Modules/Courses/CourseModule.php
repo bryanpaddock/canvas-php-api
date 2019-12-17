@@ -6,6 +6,7 @@ namespace Valenture\CanvasApi\Modules\Courses;
 use Exception;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
+use RuntimeException;
 use Valenture\CanvasApi\CanvasApi;
 use Valenture\CanvasApi\Interfaces\ModuleInterface;
 use Valenture\CanvasApi\Modules\AbstractModule;
@@ -71,14 +72,16 @@ final class CourseModule extends AbstractModule implements ModuleInterface
      */
     public function createCourse(Course $course): Course
     {
-        $headers = ['Authorization' => 'Bearer ' . $this->getApi()->getConfig()->getToken()];
+        if (! $this->createCoursesSuffix) {
+            throw new RuntimeException('Endpoints have not been constructed yet. Please call setUserId() first.');
+        }
 
         $url = $this->getApi()->getApiPrefix() . $this->createCoursesSuffix;
 
         try {
             /** @var Response $guzzleResponse */
             $guzzleResponse = $this->getApi()->getClient()->get($url, [
-                'headers' => $headers
+                'headers' => $this->getAuthHeader()
             ]);
 
             $body = $guzzleResponse->getBody()->getContents();
@@ -100,14 +103,16 @@ final class CourseModule extends AbstractModule implements ModuleInterface
      */
     public function listCourses(): array
     {
-        $headers = ['Authorization' => 'Bearer ' . $this->getApi()->getConfig()->getToken()];
+        if (! $this->listCoursesSuffix) {
+            throw new RuntimeException('Endpoints have not been constructed yet. Please call setUserId() first.');
+        }
 
         $url = $this->getApi()->getApiPrefix() . $this->listCoursesSuffix;
 
         try {
             /** @var Response $guzzleResponse */
             $guzzleResponse = $this->getApi()->getClient()->get($url, [
-                'headers' => $headers
+                'headers' => $this->getAuthHeader()
             ]);
 
             $body = $guzzleResponse->getBody()->getContents();
@@ -164,14 +169,12 @@ final class CourseModule extends AbstractModule implements ModuleInterface
      */
     public function enrollUserToCourse(int $courseId, int $userId)
     {
-        $headers = ['Authorization' => 'Bearer ' . $this->getApi()->getConfig()->getToken()];
-
         $url = $this->getApi()->getApiPrefix() . $this->listCoursesSuffix;
 
         try {
             /** @var Response $guzzleResponse */
             $guzzleResponse = $this->getApi()->getClient()->get($url, [
-                'headers' => $headers
+                'headers' => $this->getAuthHeader()
             ]);
 
             $body = $guzzleResponse->getBody()->getContents();
