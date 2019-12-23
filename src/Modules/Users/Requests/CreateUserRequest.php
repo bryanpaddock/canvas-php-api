@@ -177,8 +177,8 @@ final class CreateUserRequest
             'user[sortable_name]' => $this->user->getSortableName(),
             'user[time_zone]' => $this->user->getTimezone(),
             'user[locale]' => $this->user->getLocale(),
-            'user[terms_of_use]' => true,
-            'user[skip_registration]' => true,
+            'user[terms_of_use]' => $this->user->isTermsOfUse(),
+            'user[skip_registration]' => $this->user->isSkipRegistration(),
 
             'pseudonym[unique_id]' => $this->userPseudonym->getUniqueId(),
             'pseudonym[password]' => $this->userPseudonym->getPassword(),
@@ -188,6 +188,10 @@ final class CreateUserRequest
             'pseudonym[force_self_registration]' => $this->userPseudonym->isForceSelfRegistration(),
             'pseudonym[authentication_provider_id]' => $this->userPseudonym->getAuthenticationProviderId(),
 
+            'communication_channel[type]' => $this->communicationChannel->getType(),
+            'communication_channel[address]' => $this->communicationChannel->getAddress(),
+            'communication_channel[confirmation_url]' => $this->communicationChannel->isConfirmationUrl(),
+            'communication_channel[skip_confirmation]' => $this->communicationChannel->isSkipConfirmation(),
 
             'force_validations' => $this->isForceValidations(),
             'enable_sis_reactivation' => $this->isEnableSisReactivation(),
