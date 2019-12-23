@@ -178,7 +178,7 @@ final class UserPseudonym
             $data['force_self_registration'] = $this->forceSelfRegistration;
         }
         if ($this-$this->authenticationProviderId) {
-            $data['authentication_provider_id'] = $this-$this->authenticationProviderId;
+            $data['authentication_provider_id'] = $this->authenticationProviderId;
         }
 
         return $data;
