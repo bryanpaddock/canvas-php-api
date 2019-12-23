@@ -157,4 +157,30 @@ final class UserPseudonym
     {
         $this->authenticationProviderId = $authenticationProviderId;
     }
+
+    public function toArray(): array
+    {
+        $data = [
+            'unique_id' => $this->getUniqueId(),
+            'password' => $this->getPassword(),
+        ];
+
+        if ($this->sisUserId) {
+            $data['sis_user_id'] = $this->sisUserId;
+        }
+        if ($this->integrationId) {
+            $data['integration_id'] = $this->integrationId;
+        }
+        if ($this->sendConfirmation) {
+            $data['send_confirmation'] = $this->sendConfirmation;
+        }
+        if ($this->forceSelfRegistration) {
+            $data['force_self_registration'] = $this->forceSelfRegistration;
+        }
+        if ($this-$this->authenticationProviderId) {
+            $data['authentication_provider_id'] = $this-$this->authenticationProviderId;
+        }
+
+        return $data;
+    }
 }

@@ -95,4 +95,25 @@ final class CommunicationChannel
     {
         $this->skipConfirmation = $skipConfirmation;
     }
+
+    public function toArray(): array
+    {
+        $data = [];
+        if ($this->type) {
+            $data['type'] = $this->getType();
+        }
+        if ($this->address) {
+            $data['address'] = $this->getAddress();
+        }
+
+        if ($this->confirmationUrl) {
+            $data['confirmation_url'] = $this->isConfirmationUrl();
+        }
+
+        if ($this->skipConfirmation) {
+            $data['skip_confirmation'] = $this->isSkipConfirmation();
+        }
+
+        return $data;
+    }
 }

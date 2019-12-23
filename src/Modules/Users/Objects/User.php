@@ -455,6 +455,13 @@ final class User implements JsonSerializable
             $return['last_login'] = $this->lastLogin;
         }
 
+        if ($this->termsOfUse) {
+            $data['terms_of_use'] = $this->isTermsOfUse();
+        }
+        if ($this->skipRegistration) {
+            $data['skip_registration'] = $this->isSkipRegistration();
+        }
+
         return $return;
     }
     /**

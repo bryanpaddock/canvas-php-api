@@ -171,65 +171,26 @@ final class CreateUserRequest
      */
     public function toArray(): array
     {
-        $data = [
-            'user[name]' => $this->user->getName(),
-            'user[short_name]' => $this->user->getShortName(),
-            'user[sortable_name]' => $this->user->getSortableName(),
-        ];
+        $returnData = [];
 
-        if ($this->user->getTimezone()) {
-            $data['user[time_zone]'] = $this->user->getTimezone();
-        }
+        $user = $this->user->toArray();
+        $userPseudonym = $this->userPseudonym->toArray();
+        $commChannel = $this->communicationChannel->toArray();
 
-        if ($this->user->getLocale()) {
-            $data['user[locale]'] = $this->user->getLocale();
-        }
+        $returnData += $this->addKeyToParams($user, 'user');
+        $returnData += $this->addKeyToParams($userPseudonym, 'pseudonym');
+        $returnData += $this->addKeyToParams($commChannel, 'communication_channel');
 
-        if ($this->user->isTermsOfUse()) {
-            $data['user[terms_of_use]'] = $this->user->isTermsOfUse();
-        }
-        if ($this->user->isSkipRegistration()) {
-            $data['user[skip_registration]'] = $this->user->isSkipRegistration();
-        }
+        return $returnData;
+    }
 
-        $data += [
-            'pseudonym[unique_id]' => $this->userPseudonym->getUniqueId(),
-            'pseudonym[password]' => $this->userPseudonym->getPassword(),
-        ];
-
-        if ($this->userPseudonym->getSisUserId()) {
-            $data['pseudonym[sis_user_id'] = $this->userPseudonym->getSisUserId();
+    private function addKeyToParams(array $params, $keyName): array
+    {
+        $returnData = [];
+        foreach ($params as $key => $value) {
+            $userKey = sprintf('%s[%s]', $keyName, $key);
+            $returnData[$userKey] = $value;
         }
-        if ($this->userPseudonym->getIntegrationId()) {
-            $data['pseudonym[integration_id]'] = $this->userPseudonym->getIntegrationId();
-        }
-        if ($this->userPseudonym->isSendConfirmation()) {
-            $data['pseudonym[send_confirmation]'] = $this->userPseudonym->isSendConfirmation();
-        }
-        if ($this->userPseudonym->isForceSelfRegistration()) {
-            $data['pseudonym[force_self_registration]'] = $this->userPseudonym->isForceSelfRegistration();
-        }
-        if ($this->userPseudonym->getAuthenticationProviderId()) {
-            $data['pseudonym[authentication_provider_id]'] = $this->userPseudonym->getAuthenticationProviderId();
-        }
-
-        $data += [
-            'communication_channel[type]' => $this->communicationChannel->getType(),
-            'communication_channel[address]' => $this->communicationChannel->getAddress(),
-            'communication_channel[confirmation_url]' => $this->communicationChannel->isConfirmationUrl(),
-            'communication_channel[skip_confirmation]' => $this->communicationChannel->isSkipConfirmation(),
-        ];
-
-        if ($this->isForceValidations()) {
-            $data['force_validations'] = $this->isForceValidations();
-        }
-        if ($this->isEnableSisReactivation()) {
-            $data['enable_sis_reactivation'] = $this->isEnableSisReactivation();
-        }
-        if ($this->getDestination()) {
-            $data['destination'] = $this->getDestination();
-        }
-
-        return $data;
+        return $returnData;
     }
 }
