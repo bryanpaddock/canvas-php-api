@@ -221,7 +221,7 @@ final class CreateUserRequest
         ];
 
         if ($this->isForceValidations()) {
-            $data['force_validations'] = $this->isForceValidations()];
+            $data['force_validations'] = $this->isForceValidations();
         }
         if ($this->isEnableSisReactivation()) {
             $data['enable_sis_reactivation'] = $this->isEnableSisReactivation();
