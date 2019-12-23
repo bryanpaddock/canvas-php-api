@@ -65,7 +65,7 @@ final class UserPseudonym
     /**
      * @return string
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -81,7 +81,7 @@ final class UserPseudonym
     /**
      * @return string
      */
-    public function getSisUserId(): string
+    public function getSisUserId(): ?string
     {
         return $this->sisUserId;
     }
@@ -97,7 +97,7 @@ final class UserPseudonym
     /**
      * @return string
      */
-    public function getIntegrationId(): string
+    public function getIntegrationId(): ?string
     {
         return $this->integrationId;
     }
@@ -145,7 +145,7 @@ final class UserPseudonym
     /**
      * @return string
      */
-    public function getAuthenticationProviderId(): string
+    public function getAuthenticationProviderId(): ?string
     {
         return $this->authenticationProviderId;
     }

@@ -357,7 +357,7 @@ final class User implements JsonSerializable
     /**
      * @return DateTime
      */
-    public function getBirthdate(): DateTime
+    public function getBirthdate(): ?DateTime
     {
         return $this->birthdate;
     }
