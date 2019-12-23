@@ -95,18 +95,6 @@ final class User implements JsonSerializable
     private $bio;
 
     /**
-     * User constructor.
-     *
-     * @param int $id
-     * @param string $name
-     */
-    public function __construct(int $id, string $name)
-    {
-        $this->id = $id;
-        $this->name = $name;
-    }
-
-    /**
      * @param int $id
      */
     public function setId(int $id): void
