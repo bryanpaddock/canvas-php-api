@@ -95,6 +95,26 @@ final class User implements JsonSerializable
     private $bio;
 
     /**
+     * Whether the user accepts the terms of use. Required if this is a self-registration and this canvas instance requires users to accept the terms (on by default).
+     *
+     * If this is true, it will mark the user as having accepted the terms of use.
+     *
+     * @var bool
+     */
+    private $termsOfUse;
+
+    /**
+     * Automatically mark the user as registered.
+     *
+     * If this is true, it is recommended to set "pseudonym[send_confirmation]" to true as well. Otherwise, the user will not receive any messages about their account creation.
+     *
+     * The users communication channel confirmation can be skipped by setting "communication_channel[skip_confirmation]" to true as well.
+     *
+     * @var bool
+     */
+    private $skipRegistration;
+
+    /**
      * @param int $id
      */
     public function setId(int $id): void
@@ -351,28 +371,99 @@ final class User implements JsonSerializable
     }
 
     /**
+     * @return bool
+     */
+    public function isTermsOfUse(): bool
+    {
+        return $this->termsOfUse;
+    }
+
+    /**
+     * @param bool $termsOfUse
+     */
+    public function setTermsOfUse(bool $termsOfUse): void
+    {
+        $this->termsOfUse = $termsOfUse;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSkipRegistration(): bool
+    {
+        return $this->skipRegistration;
+    }
+
+    /**
+     * @param bool $skipRegistration
+     */
+    public function setSkipRegistration(bool $skipRegistration): void
+    {
+        $this->skipRegistration = $skipRegistration;
+    }
+
+    public function toArray(): array
+    {
+        $return = [
+            'name' => $this->name,
+            'sortable_name' => $this->sortableName,
+            'short_name' => $this->shortName,
+            'email' => $this->email,
+        ];
+
+        if ($this->id) {
+            $return['id'] = $this->id;
+        }
+
+        if ($this->sisUserId) {
+            $return['sis_user_id'] = $this->sisUserId;
+        }
+
+        if ($this->sisImportId) {
+            $return['sis_import_id'] = $this->sisImportId;
+        }
+
+        if ($this->integrationId) {
+            $return['integration_id'] = $this->integrationId;
+        }
+
+        if ($this->loginId) {
+            $return['login_id'] = $this->loginId;
+        }
+
+        if ($this->avatarUrl) {
+            $return['avatar_url'] = $this->avatarUrl;
+        }
+
+        if ($this->enrollments) {
+            $return['enrollments'] = $this->enrollments;
+        }
+
+        if ($this->locale) {
+            $return['locale'] = $this->locale;
+        }
+
+        if ($this->bio) {
+            $return['bio'] = $this->bio;
+        }
+
+        if ($this->timezone) {
+            $return['time_zone'] = $this->timezone;
+        }
+
+        if ($this->lastLogin) {
+            $return['last_login'] = $this->lastLogin;
+        }
+
+        return $return;
+    }
+    /**
      * Returns the json representation of this user object
      *
      * @inheritDoc
      */
     public function jsonSerialize()
     {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'sortable_name' => $this->sortableName,
-            'short_name' => $this->shortName,
-            'sis_user_id' => $this->sisUserId,
-            'sis_import_id' => $this->sisImportId,
-            'integration_id' => $this->integrationId,
-            'login_id' => $this->loginId,
-            'avatar_url' => $this->avatarUrl,
-            'enrollments' => $this->enrollments,
-            'email' => $this->email,
-            'locale' => $this->locale,
-            'last_login' => $this->lastLogin,
-            'time_zone' => $this->timezone,
-            'bio' => $this->bio
-        ];
+        return $this->toArray();
     }
 }

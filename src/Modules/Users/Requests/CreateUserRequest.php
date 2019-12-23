@@ -177,6 +177,8 @@ final class CreateUserRequest
             'user[sortable_name]' => $this->user->getSortableName(),
             'user[time_zone]' => $this->user->getTimezone(),
             'user[locale]' => $this->user->getLocale(),
+            'user[terms_of_use]' => true,
+            'user[skip_registration]' => true,
 
             'pseudonym[unique_id]' => $this->userPseudonym->getUniqueId(),
             'pseudonym[password]' => $this->userPseudonym->getPassword(),
