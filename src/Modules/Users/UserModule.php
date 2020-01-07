@@ -150,4 +150,35 @@ final class UserModule extends AbstractModule implements ModuleInterface
             throw new RuntimeException($errorMessage);
         }
     }
+
+    /**
+     * Adds a Canvas user as an observer to another User
+     *
+     * @param string $studentId
+     * @param string $observerId
+     * @return User
+     */
+    public function addObserver(string $studentId, string $observerId): User
+    {
+        $urlSuffix = sprintf('/users/%s/observees/%s', $studentId, $observerId);
+
+        $url = $this->getApi()->getApiPrefix() . $urlSuffix;
+
+        try {
+            /** @var Response $guzzleResponse */
+            $guzzleResponse = $this->getApi()->getClient()->put($url, [
+                'headers' => $this->getAuthHeader(),
+            ]);
+
+            $body = $guzzleResponse->getBody()->getContents();
+            $json = json_decode($body, false, 512, JSON_THROW_ON_ERROR);
+
+            return UserFactory::make($json);
+        } catch (RequestException $e) {
+            $msg = $e->getMessage();
+            $errorMessage = 'Users/ListUsers Error: ' . $msg;
+
+            throw new RuntimeException($errorMessage);
+        }
+    }
 }
